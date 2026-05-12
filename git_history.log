@@ -1,0 +1,113 @@
+--- BEGIN COMMIT ---
+FILE: queue_array.c
+VERSION: 1
+TIME: Thu Oct 30 09:47:45 2025
+MESSAGE: first version
+--- BEGIN CONTENT ---
+#include <stdio.h>
+#include <stdlib.h>
+
+#define CAPACITY 10  // adjust as needed
+
+// Global queue storage and indices
+int queue[CAPACITY];
+int front = 0;   // index of current front element
+int rear  = -1;  // index of current rear element
+
+void initQueue() {
+    front = 0;
+    rear  = -1;
+}
+
+int isEmpty() {
+    return front > rear;
+}
+
+int isFull() {
+    return rear == CAPACITY - 1;
+}
+
+int enqueue(int x) {
+    if (isFull()) {
+        printf("Overflow: Queue is full.\n");
+        return 0;
+    }
+    queue[++rear] = x;
+    return 1;
+}
+
+int dequeue(int *out) {
+    if (isEmpty()) {
+        printf("Underflow: Queue is empty.\n");
+        return 0;
+    }
+    *out = queue[front++];
+    return 1;
+}
+
+int peek(int *out) {
+    if (isEmpty()) {
+        printf("Queue is empty.\n");
+        return 0;
+    }
+    *out = queue[front];
+    return 1;
+}
+
+void display() {
+    if (isEmpty()) {
+        printf("Queue is empty.\n");
+        return;
+    }
+    printf("Queue (front -> rear): ");
+    for (int i = front; i <= rear; i++) {
+        printf("%d ", queue[i]);
+    }
+    printf("\n");
+}
+
+int main(void) {
+    int choice, x, ok;
+    initQueue();
+
+    while (1) {
+        printf("\n--- Linear Queue (Array, no struct) ---\n");
+        printf("1. Enqueue\n");
+        printf("2. Dequeue\n");
+        printf("3. Peek (Front)\n");
+        printf("4. Display\n");
+        printf("0. Exit\n");
+        printf("Enter choice: ");
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input.\n");
+            return 0;
+        }
+
+        switch (choice) {
+            case 1:
+                printf("Enter value: ");
+                if (scanf("%d", &x) != 1) { printf("Invalid input.\n"); return 0; }
+                enqueue(x);
+                break;
+            case 2:
+                ok = dequeue(&x);
+                if (ok) printf("Dequeued: %d\n", x);
+                break;
+            case 3:
+                ok = peek(&x);
+                if (ok) printf("Front element: %d\n", x);
+                break;
+            case 4:
+                display();
+                break;
+            case 0:
+                printf("Goodbye!\n");
+                return 0;
+            default:
+                printf("Invalid choice.\n");
+        }
+    }
+}
+
+--- END CONTENT ---
+--- END COMMIT ---
